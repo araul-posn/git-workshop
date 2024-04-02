@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Initialize a new Git repository and enter the directory
-git init workshop-repo && cd workshop-repo
+git init -b main workshop-repo && cd workshop-repo
 
 # Explicitly set the initial branch to "main"
 git branch -m main
