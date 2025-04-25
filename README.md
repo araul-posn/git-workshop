@@ -1,6 +1,14 @@
-# Git Workshop Guide
+# Git Workshop Guide: Rebase vs Merge
 
-Welcome to our Git Workshop Guide. This guide is designed to help you practice essential Git commands, focusing on `rebase` and `merge`. We'll use a practice environment set up by the `init.sh` script, which creates a repository named `workshop-repo` with multiple branches for you to work with.
+Welcome to our Git Workshop Guide. This hands-on workshop is designed to help you master essential Git branching strategies, focusing on when to use `rebase` versus `merge`. You'll work with a practice repository that simulates real-world development scenarios.
+
+## Workshop Objectives
+
+By the end of this workshop, you'll understand:
+- When to use `rebase` (updating branches with parent changes)
+- When to use `merge` (integrating completed features)
+- How to resolve conflicts during both operations
+- Best practices for maintaining a clean Git history
 
 ## Getting Started
 
@@ -8,119 +16,114 @@ Welcome to our Git Workshop Guide. This guide is designed to help you practice e
 
 1. **Initialize the Practice Repository**
 
-   Start by running the `init.sh` script to set up your environment. This script creates the `workshop-repo` directory and initializes it as a Git repository with several branches for practice.
+   Run the `init.sh` script to set up your practice environment:
 
    ```sh
    sh init.sh
    ```
 
-2. **Navigate to the Repository**
+   This creates a `workshop-repo` directory with a structured Git repository containing:
+   - A `main` branch (simulating production)
+   - A `dev` branch (simulating development)
+   - Multiple feature branches at different stages
+   - A simulated hotfix scenario
 
-   Change into the `workshop-repo` directory to start practicing.
+2. **Navigate to the Repository**
 
    ```sh
    cd workshop-repo
    ```
 
-3. **Verify the Branch Setup**
+3. **Review the Workshop Structure**
 
-   Ensure all the necessary branches are created by listing them:
-
-   ```sh
-   git branch
-   ```
-
-   You should see the following branches:
-
-   ```
-   dev
-   feature_1
-   feature_2
-   feature_3
-   hotfix
-   main
-   ```
-
-   **Note:** The `hotfix` branch simulates a scenario where hotfix changes have already been merged into `main`. You'll delete this branch to simplify the setup.
+   The workshop exercises are organized in the `exercises` directory:
 
    ```sh
-   git branch -D hotfix
+   ls exercises/
    ```
 
-### Practicing with Git Commands
+   Each exercise is contained in its own markdown file with detailed instructions.
 
-#### Keeping `dev` Up to Date with `main`
+### Git Workflow Best Practices
 
-It's essential to keep the `dev` branch up to date with `main` to incorporate any changes, including hotfixes.
+#### When to Use Rebase
 
-1. Switch to the `dev` branch:
+Use `rebase` when:
+- **Updating a feature branch with changes from its parent branch**
+- **Keeping a development branch in sync with main**
+- **You want to maintain a clean, linear project history**
 
-   ```sh
-   git checkout dev
-   ```
+The rebase workflow maintains a cleaner history by avoiding "merge bubbles" and creating a linear sequence of commits.
 
-2. To update `dev` with changes from `main`, use `git rebase`:
+#### When to Use Merge
 
-   ```sh
-   git rebase main
-   ```
+Use `merge` when:
+- **Incorporating a completed feature into a parent branch**
+- **You want to preserve the complete history of feature development**
+- **Multiple developers are working on the same branch**
 
-   After rebasing, you'll notice that `dev` now includes commits from `main`, showing a linear history that incorporates the hotfix changes.
+Merge preserves the context of when branches diverged and how they came back together.
 
-#### Managing Feature Branches
+### Workshop Exercises
 
-Feature branches often need to be updated with changes from `dev` to ensure they incorporate all the latest work.
+The repository contains several exercises to practice these concepts:
 
-1. For each feature branch (`feature_1`, `feature_2`, etc.), repeat the following steps:
+1. **Exercise 1: Update dev with main**
+   - Use rebase to bring hotfix changes from main into dev
+   - Observe how the commit history remains linear
 
-   - Switch to the feature branch:
+2. **Exercise 2: Update a feature branch**
+   - Use rebase to bring dev changes into a feature branch
+   - Notice how the feature branch now contains all parent changes
 
-     ```sh
-     git checkout feature_1
-     ```
+3. **Exercise 3: Resolve a conflict**
+   - Practice resolving conflicts when feature changes overlap with parent changes
+   - Learn the proper conflict resolution workflow
 
-   - Rebase the feature branch onto `dev` to include the latest changes:
+4. **Exercise 4: Git Best Practices and Team Standards**
+   - Implement team conventions for consistent usage 
+   - Practice with commit standards, hooks, and productivity tools
 
-     ```sh
-     git rebase dev
-     ```
+5. **Exercise 5: History Manipulation**
+   - Master `git commit --amend` to improve recent commits
+   - Learn `git reset --soft HEAD~2` to combine multiple commits
+   - Understand when and how to safely rewrite history
 
-   This process ensures that your feature branches are up to date and can be merged cleanly into `dev`.
+6. **Exercise 6: Interactive Rebasing**
+   - Use `git rebase -i` for advanced history refinement
+   - Fix commit messages, reorder, squash, delete, and split commits
+   - Practice multiple operations in a single interactive rebase
 
-#### Handling Merge Conflicts
+## Handling Git Operations
 
-Merge conflicts can occur when rebasing. Here's how to resolve them:
+### Resolving Rebase Conflicts
 
-1. If you encounter a merge conflict, Git will pause the rebase and ask you to resolve the conflict.
+When conflicts occur during rebase:
 
-2. Use `git status` to identify the conflicted files.
+1. Git will pause and indicate which files have conflicts
+2. Edit the conflicted files to resolve issues (look for `<<<<<<<`, `=======`, and `>>>>>>>` markers)
+3. Add the resolved files with `git add <filename>`
+4. Continue the rebase with `git rebase --continue`
+5. If needed, abort with `git rebase --abort`
 
-3. Open the conflicted files in your editor, resolve the conflicts, and save your changes.
+### Viewing History Effectively
 
-4. Mark the conflicts as resolved by adding the files to the staging area:
+Use these commands to better understand the branch structure:
 
-   ```sh
-   git add <file>
-   ```
+```sh
+# Compact view of branches and commits
+git log --graph --oneline --all --decorate
 
-5. Continue the rebase process:
+# Detailed view of specific branch
+git log --graph --stat <branch-name>
+```
 
-   ```sh
-   git rebase --continue
-   ```
+## Record Your Work
 
-6. If you need to abort the rebase process and return to the original state, use:
+As you complete each exercise, document the commands you used and what you observed about the Git behavior. This will help reinforce your understanding of Git workflows.
 
-   ```sh
-   git rebase --abort
-   ```
+## Additional Resources
 
-### Further Practice and Exploration
-
-- Continue experimenting with other branches and scenarios.
-- Practice using `git merge` to integrate changes from one branch into another.
-- Explore advanced Git commands and workflows.
-
-## Conclusion and Additional Resources
-
-This guide covers fundamental practices with Git, focusing on rebasing and merging. For more detailed information and troubleshooting, refer to the [official Git documentation](https://git-scm.com/docs). Always remember, the best way to learn Git is by practicing, so don't hesitate to experiment with different commands and workflows in your `workshop-repo`.
+- [Git Branching Strategies](https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows)
+- [Atlassian's Git Tutorial: Rebase vs Merge](https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
+- [Interactive Git Visualizer](https://git-school.github.io/visualizing-git/)
